@@ -1,0 +1,116 @@
+.minimal-page-shell .eyebrow,
+.minimal-page-shell .hero-phase-frame,
+.minimal-page-shell .hero-copy {
+  visibility: hidden;
+}
+
+.minimal-page-shell .hero-section {
+  align-items: center;
+  text-align: center;
+}
+
+.minimal-page-shell .stage-shell {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+
+.minimal-page-shell .main-content {
+  justify-items: center;
+}
+
+.minimal-page-shell .minimal-ghost {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.minimal-page-shell .minimal-hidden-column {
+  min-width: 0;
+  display: none;
+}
+
+.minimal-page-shell .minimal-animated-hero {
+  position: relative;
+}
+
+.minimal-page-shell .minimal-logo-reveal {
+  will-change: opacity, transform;
+}
+
+.minimal-page-shell .minimal-motion-stage {
+  position: relative;
+  width: min(90vw, 46rem);
+  min-height: clamp(4.2rem, 8vw, 6.2rem);
+  overflow: visible;
+}
+
+.minimal-page-shell .minimal-motion-layer,
+.minimal-page-shell .minimal-final-wordmark {
+  position: absolute;
+  inset: 0;
+}
+
+.minimal-page-shell .minimal-final-wordmark {
+  display: grid;
+  place-items: center;
+}
+
+.minimal-page-shell .minimal-motion-token {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  display: inline-block;
+  font-family: var(--font-title);
+  font-size: clamp(4rem, 7.35vw, 6rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: 0;
+  white-space: nowrap;
+  text-rendering: geometricPrecision;
+  transform-origin: center center;
+}
+
+.minimal-page-shell .minimal-token-diem-arrival {
+  display: inline-flex;
+  align-items: baseline;
+  top: 0.015em;
+}
+
+.minimal-page-shell .minimal-token-aura,
+.minimal-page-shell .minimal-token-aur,
+.minimal-page-shell .minimal-token-a {
+  color: var(--primary);
+}
+
+.minimal-page-shell .minimal-token-d,
+.minimal-page-shell .minimal-token-iem,
+.minimal-page-shell .minimal-token-diem-inline {
+  color: var(--secondary);
+}
+
+.minimal-page-shell .minimal-token-plus,
+.minimal-page-shell .minimal-token-plus-inline {
+  color: transparent;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0;
+}
+
+.minimal-page-shell .minimal-token-plus-inline {
+  display: inline-block;
+  line-height: 0.92;
+  margin-right: 0.08em;
+  transform: translateY(-0.015em);
+}
+
+.minimal-page-shell .minimal-token-diem-inline {
+  display: inline-block;
+  line-height: 0.92;
+}
+
+.minimal-page-shell .minimal-gradient-word {
+  color: transparent;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
