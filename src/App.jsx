@@ -3,6 +3,7 @@ import CustomCursor from './components/CustomCursor';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import WaitlistForm from './components/WaitlistForm';
+import SiteFooter from './components/SiteFooter';
 import { getHeroPhaseText, getHeroPhraseStage } from './utils/heroPhaseText';
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
 
       <footer className="footer-content">
         <Features />
+        <SiteFooter />
       </footer>
     </div>
   );
