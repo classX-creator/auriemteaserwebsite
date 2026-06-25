@@ -29,7 +29,8 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   font-family: var(--font-body);
   color: var(--text-main);
   background:
@@ -81,12 +82,12 @@ input {
 .app-shell {
   position: relative;
   min-height: 100dvh;
-  height: 100dvh;
+  height: auto;
   padding: 26px 28px 20px;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   gap: 18px;
-  overflow: hidden;
+  overflow: visible;
   isolation: isolate;
 }
 
