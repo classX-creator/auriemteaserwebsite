@@ -472,112 +472,77 @@ input {
   color: #b91c1c;
 }
 
-.waitlist-followup {
-  margin-top: 10px;
-  padding: 14px 16px 14px;
+.waitlist-source-shell {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.waitlist-source-label {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.waitlist-source-label span {
+  color: var(--text-soft);
+}
+
+.waitlist-source-select-wrap {
+  position: relative;
+}
+
+.waitlist-source-select {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 48px 0 18px;
   border: 1px solid rgba(101, 93, 239, 0.1);
-  border-radius: 20px;
+  border-radius: 18px;
   background:
-    radial-gradient(circle at top left, rgba(101, 93, 239, 0.08), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 249, 255, 0.88));
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 249, 255, 0.92));
+  color: #8f9ab1;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.76),
-    0 18px 40px rgba(82, 96, 143, 0.08);
-}
-
-.waitlist-followup-inline {
-  margin: 0;
-  color: var(--text-main);
-  font-size: 0.88rem;
-  line-height: 1.45;
-}
-
-.waitlist-followup-label {
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    0 10px 24px rgba(82, 96, 143, 0.06);
   font-family: var(--font-title);
+  font-size: 0.92rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-}
-
-.waitlist-followup-subtle {
-  color: var(--text-muted);
-}
-
-.waitlist-source-group {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.waitlist-source-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.waitlist-source-option {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid rgba(101, 93, 239, 0.1);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.82);
-  color: var(--text-main);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.9),
-    0 10px 22px rgba(15, 23, 42, 0.05);
+  appearance: none;
+  -webkit-appearance: none;
   transition:
-    transform 0.2s ease,
     border-color 0.2s ease,
     box-shadow 0.2s ease,
-    background-color 0.2s ease,
     color 0.2s ease;
 }
 
-.waitlist-source-option:hover {
-  transform: translateY(-1px);
-  border-color: rgba(101, 93, 239, 0.2);
+.waitlist-source-select.has-value {
+  color: var(--text-main);
+}
+
+.waitlist-source-select:focus {
+  outline: none;
+  border-color: rgba(101, 93, 239, 0.24);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.94),
-    0 14px 28px rgba(101, 92, 240, 0.09);
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    0 0 0 4px rgba(101, 93, 239, 0.08),
+    0 12px 26px rgba(101, 92, 240, 0.1);
 }
 
-.waitlist-source-option.is-selected {
-  border-color: rgba(101, 93, 239, 0.28);
-  background: linear-gradient(135deg, rgba(101, 93, 239, 0.12), rgba(138, 118, 250, 0.1));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.78),
-    0 14px 30px rgba(101, 92, 240, 0.12);
+.waitlist-source-select:disabled {
+  opacity: 0.88;
 }
 
-.waitlist-source-option.is-locked {
-  cursor: default;
-}
-
-.waitlist-source-option input {
+.waitlist-source-icon {
   position: absolute;
-  opacity: 0;
+  inset-inline-end: 16px;
+  top: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #7e89a1;
   pointer-events: none;
-}
-
-.waitlist-source-option span {
-  font-family: var(--font-title);
-  font-size: 0.83rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.waitlist-source-status {
-  min-height: 1.25em;
-  margin: 12px 0 0;
-  color: #b91c1c;
-  font-size: 0.76rem;
-}
-
-.waitlist-source-status.is-saved {
-  color: #51607b;
+  transform: translateY(-50%);
 }
 
 .waitlist-success {
@@ -1257,28 +1222,14 @@ input {
     font-size: 0.72rem;
   }
 
-  .waitlist-followup {
-    padding: 12px 13px 12px;
-    border-radius: 18px;
+  .waitlist-source-label {
+    font-size: 0.74rem;
   }
 
-  .waitlist-followup-inline {
-    font-size: 0.8rem;
-    line-height: 1.4;
-  }
-
-  .waitlist-source-grid {
-    gap: 7px;
-    margin-top: 8px;
-  }
-
-  .waitlist-source-option {
-    min-height: 42px;
-    padding: 0 15px;
-  }
-
-  .waitlist-source-option span {
-    font-size: 0.8rem;
+  .waitlist-source-select {
+    min-height: 48px;
+    border-radius: 16px;
+    font-size: 0.88rem;
   }
 
   .footer-content {
@@ -1705,13 +1656,8 @@ input {
     padding-left: 2px;
   }
 
-  .waitlist-followup {
-    margin-top: 10px;
-  }
-
-  .waitlist-source-status {
-    margin-top: 10px;
-    font-size: 0.72rem;
+  .waitlist-source-shell {
+    margin-top: 2px;
   }
 }
 

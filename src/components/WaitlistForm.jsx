@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, CheckCircle } from 'lucide-react';
+import { ArrowUpRight, CheckCircle, ChevronDown } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 
 const SOURCE_OPTIONS = [
@@ -19,8 +19,6 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sourceChoice, setSourceChoice] = useState('');
-  const [sourceStatus, setSourceStatus] = useState('idle');
-  const [sourceError, setSourceError] = useState('');
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(max-width: 720px)').matches : false,
   );
@@ -43,38 +41,6 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
     mediaQuery.addListener(syncViewport);
     return () => mediaQuery.removeListener(syncViewport);
   }, []);
-
-  const saveSourceChoice = async (nextChoice, signupEmail) => {
-    setSourceChoice(nextChoice);
-    setSourceStatus('saving');
-    setSourceError('');
-
-    try {
-      const response = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          email: signupEmail,
-          intent: 'source',
-          sourceChoice: nextChoice,
-        }),
-      });
-
-      const data = await response.json().catch(() => null);
-
-      if (!response.ok || data?.success === false) {
-        throw new Error(data?.message || 'Unable to save your note right now.');
-      }
-
-      setSourceStatus('saved');
-    } catch {
-      setSourceStatus('idle');
-      setSourceError("Couldn't save that note right now.");
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,6 +67,7 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
         body: JSON.stringify({
           email: trimmedEmail,
           company: formData.get('company'),
+          sourceChoice: sourceChoice || undefined,
         }),
       });
 
@@ -112,9 +79,6 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
 
       window.localStorage.setItem('auriem-coming-soon-email', trimmedEmail);
       setSubmitted(true);
-      setSourceChoice('');
-      setSourceStatus('idle');
-      setSourceError('');
       onSubmitSuccess?.(trimmedEmail);
     } catch {
       setError("Couldn't send your email right now. Please try again.");
@@ -189,44 +153,31 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
           <p className="waitlist-error" id="waitlist-error" aria-live="polite">
             {submitted ? '' : error}
           </p>
-
-          {submitted ? (
-            <div className="waitlist-followup" aria-live="polite">
-              <fieldset className="waitlist-source-group">
-                <legend className="visually-hidden">How you came across Auriem</legend>
-                <p className="waitlist-followup-inline">
-                  <span className="waitlist-followup-label">How did you come across Auriem?</span>
-                  <span className="waitlist-followup-subtle"> Optional, but lovely to know.</span>
-                </p>
-                <div className="waitlist-source-grid">
+          {!submitted ? (
+            <div className="waitlist-source-shell">
+              <label className="waitlist-source-label" htmlFor="waitlist-source">
+                How did you come across Auriem? <span>Optional</span>
+              </label>
+              <div className="waitlist-source-select-wrap">
+                <select
+                  id="waitlist-source"
+                  name="source-choice"
+                  className={`waitlist-source-select ${sourceChoice ? 'has-value' : ''}`}
+                  value={sourceChoice}
+                  onChange={(e) => setSourceChoice(e.target.value)}
+                  disabled={isSubmitting}
+                >
+                  <option value="">Select a source</option>
                   {SOURCE_OPTIONS.map((option) => (
-                    <label
-                      key={option}
-                      className={`waitlist-source-option ${sourceChoice === option ? 'is-selected' : ''} ${
-                        sourceStatus === 'saved' ? 'is-locked' : ''
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="source-choice"
-                        value={option}
-                        checked={sourceChoice === option}
-                        onChange={() => saveSourceChoice(option, email.trim().toLowerCase())}
-                        disabled={sourceStatus === 'saving' || sourceStatus === 'saved'}
-                      />
-                      <span>{option}</span>
-                    </label>
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
                   ))}
-                </div>
-              </fieldset>
-
-              <p className={`waitlist-source-status ${sourceStatus === 'saved' ? 'is-saved' : ''}`}>
-                {sourceStatus === 'saving'
-                  ? 'Saving your note...'
-                  : sourceStatus === 'saved'
-                    ? 'Thank you. We have it.'
-                    : sourceError}
-              </p>
+                </select>
+                <span className="waitlist-source-icon" aria-hidden="true">
+                  <ChevronDown size={16} strokeWidth={2.1} />
+                </span>
+              </div>
             </div>
           ) : null}
         </form>
