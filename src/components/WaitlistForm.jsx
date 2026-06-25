@@ -176,7 +176,6 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
               <label className="waitlist-source-label" htmlFor="waitlist-source-trigger">
                 How did you come across Auriem? <span>Optional</span>
               </label>
-              <p className="waitlist-source-intro">A small note, if you&apos;d like to leave one.</p>
               <div
                 className={`waitlist-source-select-wrap ${isSourceMenuOpen ? 'is-open' : ''}`}
                 ref={sourceMenuRef}

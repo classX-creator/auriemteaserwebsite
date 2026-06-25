@@ -305,6 +305,8 @@ input {
 }
 
 .waitlist-card {
+  position: relative;
+  z-index: 3;
   padding: clamp(30px, 3vw, 40px);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-strong);
@@ -498,6 +500,7 @@ input {
 
 .waitlist-source-select-wrap {
   position: relative;
+  z-index: 6;
 }
 
 .waitlist-source-trigger {
@@ -565,6 +568,10 @@ input {
     0 0 0 4px rgba(118, 112, 210, 0.07),
     0 14px 30px rgba(101, 92, 240, 0.08);
   transform: translateY(-1px);
+}
+
+.waitlist-source-select-wrap.is-open {
+  z-index: 40;
 }
 
 .waitlist-source-select-wrap.is-open .waitlist-source-icon {
@@ -652,6 +659,8 @@ input {
 }
 
 .footer-content {
+  position: relative;
+  z-index: 1;
   width: min(100%, 1220px);
   margin: 0 auto;
 }
