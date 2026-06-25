@@ -473,10 +473,10 @@ input {
 }
 
 .waitlist-followup {
-  margin-top: 12px;
-  padding: 18px 18px 16px;
+  margin-top: 10px;
+  padding: 14px 16px 14px;
   border: 1px solid rgba(101, 93, 239, 0.1);
-  border-radius: 24px;
+  border-radius: 20px;
   background:
     radial-gradient(circle at top left, rgba(101, 93, 239, 0.08), transparent 34%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 249, 255, 0.88));
@@ -485,38 +485,25 @@ input {
     0 18px 40px rgba(82, 96, 143, 0.08);
 }
 
-.waitlist-followup-copy {
-  display: grid;
-  gap: 6px;
+.waitlist-followup-inline {
+  margin: 0;
+  color: var(--text-main);
+  font-size: 0.88rem;
+  line-height: 1.45;
 }
 
-.waitlist-followup-kicker {
-  margin: 0;
-  color: rgba(101, 93, 239, 0.86);
-  font-size: 0.63rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.waitlist-followup-title {
-  margin: 0;
+.waitlist-followup-label {
   font-family: var(--font-title);
-  font-size: 1.08rem;
-  line-height: 1.18;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
-.waitlist-followup-text {
-  margin: 0;
-  max-width: 28rem;
+.waitlist-followup-subtle {
   color: var(--text-muted);
-  font-size: 0.84rem;
-  line-height: 1.55;
 }
 
 .waitlist-source-group {
-  margin: 14px 0 0;
+  margin: 0;
   padding: 0;
   border: 0;
 }
@@ -524,7 +511,8 @@ input {
 .waitlist-source-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .waitlist-source-option {
@@ -1270,25 +1258,18 @@ input {
   }
 
   .waitlist-followup {
-    padding: 16px 14px 14px;
-    border-radius: 22px;
+    padding: 12px 13px 12px;
+    border-radius: 18px;
   }
 
-  .waitlist-followup-kicker {
-    letter-spacing: 0.18em;
-  }
-
-  .waitlist-followup-title {
-    font-size: 1rem;
-  }
-
-  .waitlist-followup-text {
+  .waitlist-followup-inline {
     font-size: 0.8rem;
-    line-height: 1.48;
+    line-height: 1.4;
   }
 
   .waitlist-source-grid {
-    gap: 8px;
+    gap: 7px;
+    margin-top: 8px;
   }
 
   .waitlist-source-option {

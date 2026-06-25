@@ -192,16 +192,12 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
 
           {submitted ? (
             <div className="waitlist-followup" aria-live="polite">
-              <div className="waitlist-followup-copy">
-                <p className="waitlist-followup-kicker">If you&apos;d like to share</p>
-                <h3 className="waitlist-followup-title">How did you come across Auriem?</h3>
-                <p className="waitlist-followup-text">
-                  A quiet note helps us understand where the right people are finding us.
-                </p>
-              </div>
-
               <fieldset className="waitlist-source-group">
                 <legend className="visually-hidden">How you came across Auriem</legend>
+                <p className="waitlist-followup-inline">
+                  <span className="waitlist-followup-label">How did you come across Auriem?</span>
+                  <span className="waitlist-followup-subtle"> Optional, but lovely to know.</span>
+                </p>
                 <div className="waitlist-source-grid">
                   {SOURCE_OPTIONS.map((option) => (
                     <label
