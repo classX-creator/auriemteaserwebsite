@@ -158,6 +158,7 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
               <label className="waitlist-source-label" htmlFor="waitlist-source">
                 How did you come across Auriem? <span>Optional</span>
               </label>
+              <p className="waitlist-source-intro">A small note, if you&apos;d like to leave one.</p>
               <div className="waitlist-source-select-wrap">
                 <select
                   id="waitlist-source"
@@ -167,7 +168,7 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
                   onChange={(e) => setSourceChoice(e.target.value)}
                   disabled={isSubmitting}
                 >
-                  <option value="">Select a source</option>
+                  <option value="">If you&apos;d like to share</option>
                   {SOURCE_OPTIONS.map((option) => (
                     <option key={option} value={option}>
                       {option}
