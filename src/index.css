@@ -590,6 +590,16 @@ input {
   backdrop-filter: blur(16px);
 }
 
+@media (min-width: 981px) {
+  .waitlist-source-menu {
+    top: 50%;
+    left: calc(100% + 16px);
+    right: auto;
+    width: min(250px, 26vw);
+    transform: translateY(-50%);
+  }
+}
+
 .waitlist-source-menu-item {
   display: flex;
   align-items: center;
@@ -1323,6 +1333,10 @@ input {
 
   .waitlist-source-menu {
     top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    width: auto;
+    transform: none;
     padding: 8px;
     border-radius: 18px;
   }
