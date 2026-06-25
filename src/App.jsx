@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomCursor from './components/CustomCursor';
 import Hero from './components/Hero';
 import Features from './components/Features';
 import WaitlistForm from './components/WaitlistForm';
 import SiteFooter from './components/SiteFooter';
 import { getHeroPhaseText, getHeroPhraseStage } from './utils/heroPhaseText';
+import { applySeo, buildOrganizationSchema, buildWebsiteSchema, HOME_SEO } from './utils/seo';
 
 function App() {
   const [waitlistEmail, setWaitlistEmail] = useState('');
@@ -26,6 +27,18 @@ function App() {
   const handleSubmitSuccess = () => {
     setWaitlistSubmitted(true);
   };
+
+  useEffect(() => {
+    applySeo({
+      ...HOME_SEO,
+      ogDescription: HOME_SEO.ogDescription,
+      twitterDescription: HOME_SEO.twitterDescription,
+      structuredData: [
+        buildOrganizationSchema(),
+        buildWebsiteSchema(HOME_SEO.description),
+      ],
+    });
+  }, []);
 
   return (
     <div className="app-shell">

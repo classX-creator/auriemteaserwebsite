@@ -3,18 +3,17 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import InfoPage from './pages/InfoPage.jsx'
+import { infoPages } from './content/infoPages.js'
 
 const pageRoutes = {
-  '/product': 'product',
-  '/pricing': 'pricing',
-  '/privacy': 'privacy',
   '/privacy-policy': 'privacy',
-  '/terms': 'terms',
   '/terms-of-service': 'terms',
-  '/refunds': 'refunds',
   '/refund-policy': 'refunds',
-  '/contact': 'contact',
 }
+
+Object.entries(infoPages).forEach(([key, page]) => {
+  pageRoutes[page.path] = key
+})
 
 const normalizedPath = window.location.pathname.replace(/\/$/, '') || '/'
 const pageKey = pageRoutes[normalizedPath]
