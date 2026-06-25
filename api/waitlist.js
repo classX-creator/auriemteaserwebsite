@@ -59,18 +59,25 @@ export const getWelcomeHtml = () => `<!doctype html>
         <td align="center" style="padding:40px 16px;">
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;">
             <tr>
-              <td style="padding:0 8px 18px;">
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                  <tr>
-                    <td style="padding:14px 18px;border:1px solid #e4e6ef;border-radius:24px;background:#ffffff;">
-                      <img src="${LOGO_URL}" alt="Auriem" width="112" style="display:block;width:112px;max-width:100%;height:auto;border:0;">
-                    </td>
-                  </tr>
-                </table>
+              <td align="center" style="padding:0 8px 20px;">
+                <img src="${LOGO_URL}" alt="Auriem" width="92" style="display:block;width:92px;max-width:100%;height:auto;border:0;filter:drop-shadow(0 12px 26px rgba(114,125,255,0.22));">
+                <div style="margin-top:12px;color:#18233f;font-size:12px;font-weight:700;letter-spacing:4.5px;text-transform:uppercase;">Auriem</div>
               </td>
             </tr>
             <tr>
-              <td style="padding:42px 42px 38px;border:1px solid #e0e1f3;border-radius:30px;background:#ffffff;box-shadow:0 24px 70px rgba(82,96,143,0.10);">
+              <td style="padding:0;border:1px solid #e0e1f3;border-radius:32px;background:#ffffff;box-shadow:0 24px 70px rgba(82,96,143,0.10);overflow:hidden;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                  <tr>
+                    <td style="padding:24px 42px 0;background:linear-gradient(180deg,#f7f8ff 0%,#ffffff 100%);">
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+                        <tr>
+                          <td style="height:1px;background:linear-gradient(90deg,rgba(101,93,239,0.00) 0%,rgba(101,93,239,0.32) 22%,rgba(101,93,239,0.12) 100%);font-size:0;line-height:0;">&nbsp;</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:28px 42px 38px;background:#ffffff;">
                 <p style="margin:0 0 18px;color:#655def;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;">Private Preview</p>
                 <h1 style="margin:0;color:#18233f;font-size:42px;line-height:1.08;letter-spacing:-1.4px;font-weight:750;">You&rsquo;re in.</h1>
                 <p style="margin:20px 0 0;color:#616d86;font-size:17px;line-height:1.7;">Thank you for joining us early.</p>
@@ -85,6 +92,9 @@ export const getWelcomeHtml = () => `<!doctype html>
                 </table>
                 <p style="margin:0;color:#18233f;font-size:17px;line-height:1.7;">Until then, take the softer way in.</p>
                 <p style="margin:24px 0 0;color:#655def;font-size:15px;font-weight:700;">Auriem</p>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
             <tr>
