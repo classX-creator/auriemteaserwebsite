@@ -5,6 +5,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const FROM_EMAIL = process.env.AURIEM_FROM_EMAIL || 'Auriem <hello@auriem.app>';
 const NOTIFY_EMAIL = process.env.AURIEM_WAITLIST_NOTIFY_EMAIL || 'info@auriem.app';
 const SUPPORT_EMAIL = 'support@auriem.app';
+const LOGO_URL = 'https://www.auriem.app/logo.png';
 
 const escapeHtml = (value) =>
   String(value)
@@ -26,8 +27,8 @@ const getBody = (request) => {
   return request.body ?? {};
 };
 
-const getSignupId = (email) =>
-  createHash('sha256').update(email.toLowerCase()).digest('hex').slice(0, 32);
+const getSubmissionId = (email, submittedAt) =>
+  createHash('sha256').update(`${email.toLowerCase()}:${submittedAt}`).digest('hex').slice(0, 32);
 
 export const getWelcomeText = () => `You're on the Auriem private preview.
 
@@ -59,7 +60,13 @@ export const getWelcomeHtml = () => `<!doctype html>
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;">
             <tr>
               <td style="padding:0 8px 18px;">
-                <span style="display:inline-block;padding:10px 16px;border:1px solid #e4e6ef;border-radius:999px;background:#ffffff;color:#18233f;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Auriem</span>
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                  <tr>
+                    <td style="padding:14px 18px;border:1px solid #e4e6ef;border-radius:24px;background:#ffffff;">
+                      <img src="${LOGO_URL}" alt="Auriem" width="112" style="display:block;width:112px;max-width:100%;height:auto;border:0;">
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
             <tr>
@@ -136,8 +143,8 @@ export default async function handler(request, response) {
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const signupId = getSignupId(email);
   const submittedAt = new Date().toISOString();
+  const submissionId = getSubmissionId(email, submittedAt);
   const source = String(request.headers.referer ?? 'Auriem landing page').slice(0, 300);
 
   try {
@@ -151,7 +158,7 @@ export default async function handler(request, response) {
           html: getWelcomeHtml(),
           text: getWelcomeText(),
         },
-        { idempotencyKey: `auriem-welcome-${signupId}` },
+        { idempotencyKey: `auriem-welcome-${submissionId}` },
       ),
       resend.emails.send(
         {
@@ -162,7 +169,7 @@ export default async function handler(request, response) {
           html: getNotificationHtml({ email, source, submittedAt }),
           text: `New Auriem private preview signup\n\nEmail: ${email}\nSource: ${source}\nSubmitted: ${submittedAt}`,
         },
-        { idempotencyKey: `auriem-notify-${signupId}` },
+        { idempotencyKey: `auriem-notify-${submissionId}` },
       ),
     ]);
 
