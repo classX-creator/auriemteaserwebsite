@@ -6,6 +6,15 @@ const FROM_EMAIL = process.env.AURIEM_FROM_EMAIL || 'Auriem <hello@auriem.app>';
 const NOTIFY_EMAIL = process.env.AURIEM_WAITLIST_NOTIFY_EMAIL || 'info@auriem.app';
 const SUPPORT_EMAIL = 'support@auriem.app';
 const LOGO_URL = 'https://www.auriem.app/logo.png';
+const SOURCE_OPTIONS = new Set([
+  'A friend shared it',
+  'Instagram',
+  'LinkedIn',
+  'Search',
+  'Newsletter',
+  'Community',
+  'Other',
+]);
 
 const escapeHtml = (value) =>
   String(value)
@@ -126,6 +135,19 @@ const getNotificationHtml = ({ email, source, submittedAt }) => `<!doctype html>
   </body>
 </html>`;
 
+const getSourceNoteHtml = ({ email, sourceChoice, submittedAt }) => `<!doctype html>
+<html lang="en">
+  <body style="margin:0;padding:24px;background:#f4f5fa;color:#18233f;font-family:Arial,sans-serif;">
+    <div style="max-width:560px;margin:0 auto;padding:28px;border:1px solid #e3e5ef;border-radius:20px;background:#ffffff;">
+      <p style="margin:0 0 8px;color:#655def;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;">Auriem Source Note</p>
+      <h1 style="margin:0 0 22px;font-size:26px;">How they found Auriem</h1>
+      <p style="margin:0 0 8px;"><strong>Email:</strong> ${escapeHtml(email)}</p>
+      <p style="margin:0 0 8px;"><strong>Source:</strong> ${escapeHtml(sourceChoice)}</p>
+      <p style="margin:0;"><strong>Submitted:</strong> ${escapeHtml(submittedAt)}</p>
+    </div>
+  </body>
+</html>`;
+
 export default async function handler(request, response) {
   response.setHeader('Cache-Control', 'no-store');
 
@@ -137,6 +159,7 @@ export default async function handler(request, response) {
   const body = getBody(request);
   const email = String(body.email ?? '').trim().toLowerCase();
   const honeypot = String(body.company ?? '').trim();
+  const intent = String(body.intent ?? 'signup').trim().toLowerCase();
 
   // Return success to bots without sending anything.
   if (honeypot) {
@@ -155,6 +178,39 @@ export default async function handler(request, response) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const submittedAt = new Date().toISOString();
   const submissionId = getSubmissionId(email, submittedAt);
+
+  if (intent === 'source') {
+    const sourceChoice = String(body.sourceChoice ?? '').trim();
+
+    if (!SOURCE_OPTIONS.has(sourceChoice)) {
+      return response.status(400).json({ message: 'Choose a valid source option.' });
+    }
+
+    try {
+      const sourceResult = await resend.emails.send(
+        {
+          from: FROM_EMAIL,
+          to: NOTIFY_EMAIL,
+          replyTo: email,
+          subject: 'Auriem source note',
+          html: getSourceNoteHtml({ email, sourceChoice, submittedAt }),
+          text: `Auriem source note\n\nEmail: ${email}\nSource: ${sourceChoice}\nSubmitted: ${submittedAt}`,
+        },
+        { idempotencyKey: `auriem-source-${submissionId}` },
+      );
+
+      if (sourceResult.error) {
+        console.error('Resend rejected an Auriem source note.', sourceResult.error);
+        return response.status(502).json({ message: 'Unable to save the source note.' });
+      }
+
+      return response.status(200).json({ success: true });
+    } catch (error) {
+      console.error('Auriem source note failed.', error);
+      return response.status(500).json({ message: 'Unable to save the source note right now.' });
+    }
+  }
+
   const source = String(request.headers.referer ?? 'Auriem landing page').slice(0, 300);
 
   try {
