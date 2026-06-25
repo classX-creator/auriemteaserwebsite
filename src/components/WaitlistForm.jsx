@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, CheckCircle, ChevronDown } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 
@@ -19,9 +19,11 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sourceChoice, setSourceChoice] = useState('');
+  const [isSourceMenuOpen, setIsSourceMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== 'undefined' ? window.matchMedia('(max-width: 720px)').matches : false,
   );
+  const sourceMenuRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -42,6 +44,21 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
     return () => mediaQuery.removeListener(syncViewport);
   }, []);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const handlePointerDown = (event) => {
+      if (!sourceMenuRef.current?.contains(event.target)) {
+        setIsSourceMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('pointerdown', handlePointerDown);
+    return () => window.removeEventListener('pointerdown', handlePointerDown);
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,6 +72,7 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
 
     setError('');
     setIsSubmitting(true);
+    setIsSourceMenuOpen(false);
 
     try {
       const formData = new FormData(e.currentTarget);
@@ -155,29 +173,54 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
           </p>
           {!submitted ? (
             <div className="waitlist-source-shell">
-              <label className="waitlist-source-label" htmlFor="waitlist-source">
+              <label className="waitlist-source-label" htmlFor="waitlist-source-trigger">
                 How did you come across Auriem? <span>Optional</span>
               </label>
               <p className="waitlist-source-intro">A small note, if you&apos;d like to leave one.</p>
-              <div className="waitlist-source-select-wrap">
-                <select
-                  id="waitlist-source"
-                  name="source-choice"
-                  className={`waitlist-source-select ${sourceChoice ? 'has-value' : ''}`}
-                  value={sourceChoice}
-                  onChange={(e) => setSourceChoice(e.target.value)}
+              <div
+                className={`waitlist-source-select-wrap ${isSourceMenuOpen ? 'is-open' : ''}`}
+                ref={sourceMenuRef}
+              >
+                <input type="hidden" name="source-choice" value={sourceChoice} />
+                <button
+                  id="waitlist-source-trigger"
+                  type="button"
+                  className={`waitlist-source-trigger ${sourceChoice ? 'has-value' : ''}`}
+                  aria-expanded={isSourceMenuOpen ? 'true' : 'false'}
+                  aria-controls="waitlist-source-menu"
                   disabled={isSubmitting}
+                  onClick={() => setIsSourceMenuOpen((open) => !open)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Escape') {
+                      setIsSourceMenuOpen(false);
+                    }
+                  }}
                 >
-                  <option value="">If you&apos;d like to share</option>
-                  {SOURCE_OPTIONS.map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
+                  <span>{sourceChoice || "If you'd like to share"}</span>
+                </button>
                 <span className="waitlist-source-icon" aria-hidden="true">
                   <ChevronDown size={16} strokeWidth={2.1} />
                 </span>
+
+                {isSourceMenuOpen ? (
+                  <div className="waitlist-source-menu" id="waitlist-source-menu" role="listbox">
+                    {SOURCE_OPTIONS.map((option) => (
+                      <button
+                        key={option}
+                        type="button"
+                        role="option"
+                        aria-selected={sourceChoice === option ? 'true' : 'false'}
+                        className={`waitlist-source-menu-item ${sourceChoice === option ? 'is-selected' : ''}`}
+                        onClick={() => {
+                          setSourceChoice(option);
+                          setIsSourceMenuOpen(false);
+                        }}
+                      >
+                        <span>{option}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
               </div>
             </div>
           ) : null}
