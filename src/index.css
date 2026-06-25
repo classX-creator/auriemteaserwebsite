@@ -988,6 +988,15 @@ input {
   }
 }
 
+.form-honeypot {
+  position: absolute;
+  inset-inline-start: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 @media (max-width: 720px) {
   body {
     overflow: auto;

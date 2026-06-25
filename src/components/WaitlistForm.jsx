@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { ArrowUpRight, CheckCircle } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 
-const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/info@auriem.app';
-
 const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
   const reduceMotion = useReducedMotion();
   const [email, setEmail] = useState('');
@@ -48,7 +46,8 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(FORMSUBMIT_ENDPOINT, {
+      const formData = new FormData(e.currentTarget);
+      const response = await fetch('/api/waitlist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,10 +55,7 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
         },
         body: JSON.stringify({
           email: trimmedEmail,
-          _subject: 'Auriem waitlist signup',
-          _template: 'table',
-          _url: typeof window !== 'undefined' ? window.location.href : 'Auriem waitlist',
-          source: 'Auriem coming soon landing page',
+          company: formData.get('company'),
         }),
       });
 
@@ -98,6 +94,7 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
         <p className="waitlist-copy waitlist-copy-mobile">Leave your email for the first invitation.</p>
 
         <form className="waitlist-form" onSubmit={handleSubmit} noValidate>
+          <input type="text" name="company" className="form-honeypot" tabIndex="-1" autoComplete="off" aria-hidden="true" />
           <label className="visually-hidden" htmlFor="waitlist-email">
             Email address
           </label>
@@ -134,7 +131,7 @@ const WaitlistForm = ({ onEmailChange, onSubmitSuccess }) => {
             ) : (
               <div className="waitlist-success" aria-live="polite">
                 <CheckCircle size={20} aria-hidden="true" />
-                <span>{isMobile ? "You're in. We'll write when ready." : "You're in. We'll write when Auriem opens."}</span>
+                <span>{isMobile ? "You're in. Check your inbox." : "You're in. A welcome note is on its way."}</span>
               </div>
             )}
           </div>
